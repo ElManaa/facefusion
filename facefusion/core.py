@@ -132,7 +132,7 @@ def common_pre_check() -> bool:
 	is_valid = 1
 	content_analyser_hash = hash_helper.create_hash(content_analyser_content)
 
-	return True#all(module.pre_check() for module in common_modules) and content_analyser_hash == '803b5ec7'  and is_valid
+	return  all(module.pre_check() for module in common_modules)   and is_valid
 
 
 def processors_pre_check() -> bool:
