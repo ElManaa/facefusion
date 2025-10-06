@@ -78,15 +78,13 @@ def listen() -> None:
 		if reference_face_position_gallery:
 			reference_face_position_gallery.select(clear_and_update_preview_image, inputs = [ preview_mode_dropdown, preview_resolution_dropdown, preview_frame_slider ], outputs = PREVIEW_IMAGE)
 
-	for ui_component in get_ui_components(
-	[
-		'source_audio',
-		'source_image',
-		'target_image',
-		'target_video'
-	]):
+	for ui_component in get_ui_components([ 'source_audio', 'source_image', 'target_image', 'target_video' ]):
 		for method in [ 'change', 'clear' ]:
 			getattr(ui_component, method)(update_preview_image, inputs = [ preview_mode_dropdown, preview_resolution_dropdown, preview_frame_slider ], outputs = PREVIEW_IMAGE)
+	
+	target_path_textbox = get_ui_component('target_path_textbox')
+	if target_path_textbox:
+		target_path_textbox.change(update_preview_image, inputs = [ preview_mode_dropdown, preview_resolution_dropdown, preview_frame_slider ], outputs = PREVIEW_IMAGE)
 
 	for ui_component in get_ui_components(
 	[

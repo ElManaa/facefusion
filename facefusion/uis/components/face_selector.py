@@ -113,15 +113,17 @@ def listen() -> None:
 		REFERENCE_FACE_POSITION_GALLERY.select(update_reference_frame_number, inputs = preview_frame_slider)
 		REFERENCE_FACE_POSITION_GALLERY.select(update_reference_face_position)
 
-	for ui_component in get_ui_components(
-	[
-		'target_image',
-		'target_video'
-	]):
+	for ui_component in get_ui_components([ 'target_image', 'target_video' ]):
 		for method in [ 'change', 'clear' ]:
 			getattr(ui_component, method)(clear_reference_frame_number)
 			getattr(ui_component, method)(clear_reference_face_position)
 			getattr(ui_component, method)(update_reference_position_gallery, outputs = REFERENCE_FACE_POSITION_GALLERY)
+	
+	target_path_textbox = get_ui_component('target_path_textbox')
+	if target_path_textbox:
+		target_path_textbox.change(clear_reference_frame_number)
+		target_path_textbox.change(clear_reference_face_position)
+		target_path_textbox.change(update_reference_position_gallery, outputs = REFERENCE_FACE_POSITION_GALLERY)
 
 	for ui_component in get_ui_components(
 	[

@@ -6,7 +6,7 @@ import facefusion.choices
 from facefusion import state_manager, voice_extractor, wording
 from facefusion.filesystem import is_video
 from facefusion.types import VoiceExtractorModel
-from facefusion.uis.core import get_ui_components, register_ui_component
+from facefusion.uis.core import get_ui_component, get_ui_components, register_ui_component
 
 VOICE_EXTRACTOR_MODEL_DROPDOWN : Optional[gradio.Dropdown] = None
 
@@ -26,13 +26,13 @@ def render() -> None:
 def listen() -> None:
 	VOICE_EXTRACTOR_MODEL_DROPDOWN.change(update_voice_extractor_model, inputs = VOICE_EXTRACTOR_MODEL_DROPDOWN, outputs = VOICE_EXTRACTOR_MODEL_DROPDOWN)
 
-	for ui_component in get_ui_components(
-	[
-		'target_image',
-		'target_video'
-	]):
+	for ui_component in get_ui_components([ 'target_image', 'target_video' ]):
 		for method in [ 'change', 'clear' ]:
 			getattr(ui_component, method)(remote_update, outputs = VOICE_EXTRACTOR_MODEL_DROPDOWN)
+	
+	target_path_textbox = get_ui_component('target_path_textbox')
+	if target_path_textbox:
+		target_path_textbox.change(remote_update, outputs = VOICE_EXTRACTOR_MODEL_DROPDOWN)
 
 
 def remote_update() -> gradio.Dropdown:

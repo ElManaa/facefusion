@@ -8,7 +8,7 @@ from facefusion.common_helper import calculate_float_step, calculate_int_step
 from facefusion.ffmpeg import get_available_encoder_set
 from facefusion.filesystem import is_image, is_video
 from facefusion.types import AudioEncoder, Fps, Scale, VideoEncoder, VideoPreset
-from facefusion.uis.core import get_ui_components, register_ui_component
+from facefusion.uis.core import get_ui_component, get_ui_components, register_ui_component
 from facefusion.vision import detect_video_fps
 
 OUTPUT_IMAGE_QUALITY_SLIDER : Optional[gradio.Slider] = None
@@ -126,13 +126,13 @@ def listen() -> None:
 	OUTPUT_VIDEO_SCALE_SLIDER.release(update_output_video_scale, inputs = OUTPUT_VIDEO_SCALE_SLIDER)
 	OUTPUT_VIDEO_FPS_SLIDER.release(update_output_video_fps, inputs = OUTPUT_VIDEO_FPS_SLIDER)
 
-	for ui_component in get_ui_components(
-	[
-		'target_image',
-		'target_video'
-	]):
+	for ui_component in get_ui_components([ 'target_image', 'target_video' ]):
 		for method in [ 'change', 'clear' ]:
 			getattr(ui_component, method)(remote_update, outputs = [OUTPUT_IMAGE_QUALITY_SLIDER, OUTPUT_IMAGE_SCALE_SLIDER, OUTPUT_AUDIO_ENCODER_DROPDOWN, OUTPUT_AUDIO_QUALITY_SLIDER, OUTPUT_AUDIO_VOLUME_SLIDER, OUTPUT_VIDEO_ENCODER_DROPDOWN, OUTPUT_VIDEO_PRESET_DROPDOWN, OUTPUT_VIDEO_QUALITY_SLIDER, OUTPUT_VIDEO_SCALE_SLIDER, OUTPUT_VIDEO_FPS_SLIDER])
+	
+	target_path_textbox = get_ui_component('target_path_textbox')
+	if target_path_textbox:
+		target_path_textbox.change(remote_update, outputs = [OUTPUT_IMAGE_QUALITY_SLIDER, OUTPUT_IMAGE_SCALE_SLIDER, OUTPUT_AUDIO_ENCODER_DROPDOWN, OUTPUT_AUDIO_QUALITY_SLIDER, OUTPUT_AUDIO_VOLUME_SLIDER, OUTPUT_VIDEO_ENCODER_DROPDOWN, OUTPUT_VIDEO_PRESET_DROPDOWN, OUTPUT_VIDEO_QUALITY_SLIDER, OUTPUT_VIDEO_SCALE_SLIDER, OUTPUT_VIDEO_FPS_SLIDER])
 
 
 def remote_update() -> Tuple[gradio.Slider, gradio.Slider, gradio.Dropdown, gradio.Slider, gradio.Slider, gradio.Dropdown, gradio.Dropdown, gradio.Slider, gradio.Slider, gradio.Slider]:

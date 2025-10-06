@@ -5,7 +5,7 @@ import gradio
 from facefusion import state_manager, wording
 from facefusion.filesystem import is_video
 from facefusion.uis import choices as uis_choices
-from facefusion.uis.core import get_ui_components, register_ui_component
+from facefusion.uis.core import get_ui_component, get_ui_components, register_ui_component
 from facefusion.uis.types import ComponentOptions
 from facefusion.vision import count_video_frame_total
 
@@ -52,6 +52,10 @@ def listen() -> None:
 	for ui_component in get_ui_components([ 'target_image', 'target_video' ]):
 		for method in [ 'change', 'clear' ]:
 			getattr(ui_component, method)(update_preview_frame_slider, outputs = PREVIEW_FRAME_SLIDER)
+	
+	target_path_textbox = get_ui_component('target_path_textbox')
+	if target_path_textbox:
+		target_path_textbox.change(update_preview_frame_slider, outputs = PREVIEW_FRAME_SLIDER)
 
 
 def update_preview_frame_slider() -> gradio.Slider:

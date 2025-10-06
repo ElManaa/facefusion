@@ -75,6 +75,7 @@ ComponentName = Literal\
 	'source_audio',
 	'source_image',
 	'target_image',
+	'target_path_textbox',
 	'target_video',
 	'ui_workflow_dropdown',
 	'webcam_device_id_dropdown',

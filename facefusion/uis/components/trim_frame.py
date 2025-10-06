@@ -5,7 +5,7 @@ from gradio_rangeslider import RangeSlider
 from facefusion import state_manager, wording
 from facefusion.face_store import clear_static_faces
 from facefusion.filesystem import is_video
-from facefusion.uis.core import get_ui_components
+from facefusion.uis.core import get_ui_component, get_ui_components
 from facefusion.uis.types import ComponentOptions
 from facefusion.vision import count_video_frame_total
 
@@ -34,13 +34,13 @@ def render() -> None:
 
 def listen() -> None:
 	TRIM_FRAME_RANGE_SLIDER.release(update_trim_frame, inputs = TRIM_FRAME_RANGE_SLIDER)
-	for ui_component in get_ui_components(
-	[
-		'target_image',
-		'target_video'
-	]):
+	for ui_component in get_ui_components([ 'target_image', 'target_video' ]):
 		for method in [ 'change', 'clear' ]:
 			getattr(ui_component, method)(remote_update, outputs = [ TRIM_FRAME_RANGE_SLIDER ])
+	
+	target_path_textbox = get_ui_component('target_path_textbox')
+	if target_path_textbox:
+		target_path_textbox.change(remote_update, outputs = [ TRIM_FRAME_RANGE_SLIDER ])
 
 
 def remote_update() -> RangeSlider:

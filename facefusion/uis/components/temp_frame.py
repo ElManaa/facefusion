@@ -6,7 +6,7 @@ import facefusion.choices
 from facefusion import state_manager, wording
 from facefusion.filesystem import is_video
 from facefusion.types import TempFrameFormat
-from facefusion.uis.core import get_ui_component
+from facefusion.uis.core import get_ui_component, get_ui_components
 
 TEMP_FRAME_FORMAT_DROPDOWN : Optional[gradio.Dropdown] = None
 
@@ -29,6 +29,10 @@ def listen() -> None:
 	if target_video:
 		for method in [ 'change', 'clear' ]:
 			getattr(target_video, method)(remote_update, outputs = TEMP_FRAME_FORMAT_DROPDOWN)
+	
+	target_path_textbox = get_ui_component('target_path_textbox')
+	if target_path_textbox:
+		target_path_textbox.change(remote_update, outputs = TEMP_FRAME_FORMAT_DROPDOWN)
 
 
 def remote_update() -> gradio.Dropdown:
